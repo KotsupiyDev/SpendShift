@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', [
-                PaymentTypes::Income->name,
-                PaymentTypes::Expense->name]
+                    PaymentTypes::Income->name,
+                    PaymentTypes::Expense->name
+                ]
             );
             $table->timestamps();
         });
