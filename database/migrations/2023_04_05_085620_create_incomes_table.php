@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('value')->default(0);
             $table->text('description')->nullable();
-            $table->date('date')->default(now());
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
