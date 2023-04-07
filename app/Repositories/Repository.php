@@ -42,11 +42,11 @@ abstract class Repository
 
     public function update(array $params): bool
     {
-        return $this->model()->update($params);
+        return $this->find($params['id'])->update($params);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): bool|null
     {
-        return (bool) $this->findOrFail($id)->delete();
+        return $this->find($id)?->delete();
     }
 }

@@ -20,7 +20,7 @@ class CategoryService
 
         throw_if(!is_null($category), new \Exception('Category has exist!'));
 
-        $category = Category::create($categoryDTO->all());
+        $category = $this->repository->create($categoryDTO->all());
 
         return [
             'category' => $category,
@@ -29,25 +29,27 @@ class CategoryService
 
     public function update(CategoryDTO $categoryDTO): array
     {
+
         $category =  $this->repository->find($categoryDTO->id);
 
         throw_if(is_null($category), new \Exception('Category has not exist!'));
 
-        $category->name = $categoryDTO->name;
+        $categoryUpdate = [
+            ...$category->toArray(),
+            'name' => $categoryDTO->name
+        ];
 
-        $category->save();
+        $this->repository->update($categoryUpdate);
 
         return [
-            'category' => $category,
+            'category' => $categoryUpdate,
         ];
     }
 
     public function delete(int $categoryId): void
     {
-        $category = $this->repository->find($categoryId);
+        $category = $this->repository->delete($categoryId);
 
         throw_if(is_null($category), new \Exception('Category has not exist!'));
-
-        $category->delete();
     }
 }
