@@ -49,13 +49,18 @@ class CategoryController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category added to list.',
+                'message' => 'Category updated.',
                 'data' => $categoryResponse,
             ]);
         } catch (\Exception $exception) {
+            $duplicateRecord = '23505';
+            $message = $exception->getCode() === $duplicateRecord ?
+                'Category with this name has exist.' :
+                $exception->getMessage();
+
             return response()->json([
                 'success' => false,
-                'message' => $exception->getMessage(),
+                'message' => $message,
             ], 400);
         }
     }
