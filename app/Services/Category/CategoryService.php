@@ -4,17 +4,19 @@ namespace App\Services\Category;
 
 use App\DTO\CategoryDTO;
 use App\Models\Category;
+use App\Repositories\CategoryRepository;
 use Illuminate\Database\Eloquent\Builder;
 
 class CategoryService
 {
+    public function __construct(
+        public CategoryRepository $repository,
+    )
+    {}
+
     public function save(CategoryDTO $categoryDTO): array
     {
-        $category = Category::where(function (Builder $query) use ($categoryDTO){
-            $query->where('user_id', $categoryDTO->user_id);
-            $query->where('type', $categoryDTO->type);
-            $query->where('name', $categoryDTO->name);
-        })->first();
+        $category = $this->repository->getByParams($categoryDTO);
 
         throw_if(!is_null($category), new \Exception('Category has exist!'));
 
@@ -27,7 +29,7 @@ class CategoryService
 
     public function update(CategoryDTO $categoryDTO): array
     {
-        $category = Category::find($categoryDTO->id);
+        $category =  $this->repository->find($categoryDTO->id);
 
         throw_if(is_null($category), new \Exception('Category has not exist!'));
 
@@ -42,7 +44,7 @@ class CategoryService
 
     public function delete(int $categoryId): void
     {
-        $category = Category::find($categoryId);
+        $category = $this->repository->find($categoryId);
 
         throw_if(is_null($category), new \Exception('Category has not exist!'));
 

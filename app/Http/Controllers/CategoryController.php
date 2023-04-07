@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\DTO\CategoryDTO;
-use App\Enums\PaymentTypesEnum;
 use App\Http\Requests\Categories\DeleteCategoryRequest;
 use App\Http\Requests\Categories\StoreCategoryRequest;
 use App\Http\Requests\Categories\UpdateCategoryRequest;
-use App\Models\Category;
 use App\Services\Category\CategoryService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
