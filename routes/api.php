@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Categories\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,13 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth:sanctum')
         ->post('logout', [AuthController::class, 'logout']);
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('categories')->group(function () {
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/', [CategoryController::class, 'update']);
+        Route::delete('/', [CategoryController::class, 'delete']);
+    });
+});
+
+
