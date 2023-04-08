@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Categories\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Payments\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,10 +30,16 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('categories')->group(function () {
+    Route::prefix('category')->group(function () {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/', [CategoryController::class, 'update']);
         Route::delete('/', [CategoryController::class, 'delete']);
+    });
+
+    Route::prefix('payment')->group(function () {
+        Route::post('/', [PaymentController::class, 'store']);
+        Route::put('/', [PaymentController::class, 'update']);
+        Route::delete('/', [PaymentController::class, 'delete']);
     });
 });
 
