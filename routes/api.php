@@ -5,6 +5,7 @@ use App\Http\Controllers\Categories\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Payments\PaymentController;
+use App\Http\Controllers\Accounts\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [PaymentController::class, 'store']);
         Route::put('/', [PaymentController::class, 'update']);
         Route::delete('/', [PaymentController::class, 'delete']);
+    });
+
+    Route::prefix('account')->group(function () {
+        Route::get('/', [AccountController::class, 'index']);
     });
 });
 

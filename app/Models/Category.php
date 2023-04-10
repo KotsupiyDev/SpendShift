@@ -16,6 +16,10 @@ class Category extends Model
         'user_id',
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
     public function payments(): hasMany
     {
         return $this->hasMany(Payment::class);
