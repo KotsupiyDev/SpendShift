@@ -1,37 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\Categories;
+namespace App\Http\Controllers\Payments;
 
-use App\DTO\CategoryDTO;
+use App\DTO\PaymentDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Categories\DeleteCategoryRequest;
-use App\Http\Requests\Categories\StoreCategoryRequest;
-use App\Http\Requests\Categories\UpdateCategoryRequest;
-use App\Services\Category\CategoryService;
+use App\Http\Requests\Payment\DeletePaymentRequest;
+use App\Http\Requests\Payment\StorePaymentRequest;
+use App\Http\Requests\Payment\UpdatePaymentRequest;
+use App\Services\Payment\PaymentService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class PaymentController extends Controller
 {
     public function __construct(
-        public CategoryService $categoryService
+        public PaymentService $paymentService
     )
     {}
 
-    public function store(StoreCategoryRequest $request): JsonResponse
+    public function store(StorePaymentRequest $request): JsonResponse
     {
         try {
             $userId = $request->user()->id;
-            $categoryDTO = CategoryDTO::from([
+            $paymentDTO = PaymentDTO::from([
                 ...$request->all(),
                 'user_id' => $userId,
             ]);
 
-            $categoryResponse = $this->categoryService->save($categoryDTO);
+            $paymentResponse = $this->paymentService->save($paymentDTO);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category added to list.',
-                'data' => $categoryResponse,
+                'message' => 'Payment added to list.',
+                'data' => $paymentResponse,
             ]);
         } catch (\Exception $exception) {
             return response()->json([
@@ -41,17 +42,21 @@ class CategoryController extends Controller
         }
     }
 
-    public function update(UpdateCategoryRequest $request): JsonResponse
+    public function update(UpdatePaymentRequest $request): JsonResponse
     {
         try {
-            $categoryDTO = CategoryDTO::from($request->all());
+            $user_id = $request->user()->id;
+            $paymentDTO = PaymentDTO::from([
+                ...$request->all(),
+                'user_id' => $user_id,
+            ]);
 
-            $categoryResponse = $this->categoryService->update($categoryDTO);
+            $paymentResponse = $this->paymentService->update($paymentDTO);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Category updated.',
-                'data' => $categoryResponse,
+                'data' => $paymentResponse,
             ]);
         } catch (\Exception $exception) {
             $duplicateRecord = '23505';
@@ -66,15 +71,15 @@ class CategoryController extends Controller
         }
     }
 
-    public function delete(DeleteCategoryRequest $request): JsonResponse
+    public function delete(DeletePaymentRequest $request): JsonResponse
     {
         try {
             $userId = $request->user()->id;
-            $this->categoryService->delete($request->get('id'), $userId);
+            $this->paymentService->delete($request->get('id'), $userId);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category deleted.',
+                'message' => 'Payment deleted.',
             ]);
         } catch (\Exception $exception) {
             return response()->json([

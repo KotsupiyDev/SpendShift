@@ -45,8 +45,13 @@ abstract class Repository
         return $this->find($params['id'])->update($params);
     }
 
-    public function delete(int $id): bool|null
+    public function findAndDelete(int $id): bool|null
     {
         return $this->find($id)?->delete();
+    }
+
+    public function delete($model): bool|null
+    {
+        return $model->delete();
     }
 }
