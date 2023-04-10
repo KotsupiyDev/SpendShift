@@ -69,7 +69,8 @@ class CategoryController extends Controller
     public function delete(DeleteCategoryRequest $request): JsonResponse
     {
         try {
-            $this->categoryService->delete($request->get('id'));
+            $userId = $request->user()->id;
+            $this->categoryService->delete($request->get('id'), $userId);
 
             return response()->json([
                 'success' => true,

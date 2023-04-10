@@ -3,6 +3,7 @@
 namespace App\Services\Payment;
 
 use App\DTO\PaymentDTO;
+use App\Models\User;
 use App\Repositories\CategoryRepository;
 use App\Repositories\PaymentRepository;
 use Illuminate\Support\Facades\DB;
@@ -34,29 +35,34 @@ class PaymentService
 
     public function update(PaymentDTO $paymentDTO): array
     {
-
-        $payment =  $this->repository->find($paymentDTO->value);
+        $payment = $this->repository->find($paymentDTO->id);
 
         throw_if(is_null($payment), new \Exception('Payment has not exist!'));
 
         $paymentUpdate = [
             ...$payment->toArray(),
-//            'name' => $paymentDTO->name
+            'value' => $paymentDTO->value,
+            'description' => $paymentDTO->description,
         ];
 
         $this->repository->update($paymentUpdate);
 
         return [
-            'category' => $paymentUpdate,
+            'payment' => $paymentUpdate,
         ];
     }
 
-    public function delete(int $paymentId): bool|null
+    public function delete(int $paymentId, int $userId): bool|null
     {
-        $payment = $this->repository->delete($paymentId);
+        $payment = $this->repository->find($paymentId);
 
-        throw_if(is_null($payment), new \Exception('Category has not exist!'));
+        throw_if(is_null($payment), new \Exception('Payment has not exist!'));
 
-        return $payment;
+        throw_if(
+            $payment->user_id !== $userId,
+            new \Exception('Payment does not belong to the user')
+        );
+
+        return $this->repository->delete($payment);
     }
 }

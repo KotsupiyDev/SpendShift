@@ -46,10 +46,17 @@ class CategoryService
         ];
     }
 
-    public function delete(int $categoryId): void
+    public function delete(int $categoryId, int $userId): bool|null
     {
-        $category = $this->repository->delete($categoryId);
+        $category = $this->repository->find($categoryId);
 
         throw_if(is_null($category), new \Exception('Category has not exist!'));
+
+        throw_if(
+            $category->user_id !== $userId,
+            new \Exception('Category does not belong to the user')
+        );
+
+        return $this->repository->delete($category);
     }
 }
