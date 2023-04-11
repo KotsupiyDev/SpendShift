@@ -5,6 +5,8 @@ namespace App\Services\Auth;
 use App\DTO\UserDTO;
 use App\Models\User;
 use App\Traits\Auth\HashTrait;
+use Faker\Factory;
+use Illuminate\Support\Str;
 
 class RegistrationService
 {
@@ -29,5 +31,16 @@ class RegistrationService
             ],
             'token' => $token,
         ];
+    }
+
+    public function makeGuestUser(string $email): UserDTO
+    {
+        $faker = Factory::create();
+
+        return UserDTO::from([
+            'name' => $faker->name(),
+            'email' => $email,
+            'password' => Str::random(16),
+        ]);
     }
 }

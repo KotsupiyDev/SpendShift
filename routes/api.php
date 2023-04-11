@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Payments\PaymentController;
 use App\Http\Controllers\Accounts\AccountController;
+use App\Http\Controllers\Auth\GuestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('auth')->group(function () {
     Route::post('registration', [AuthController::class, 'registration']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('guest', [GuestController::class, 'store']);
 
     Route::middleware('auth:sanctum')
         ->post('logout', [AuthController::class, 'logout']);
